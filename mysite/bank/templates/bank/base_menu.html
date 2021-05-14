@@ -1,0 +1,46 @@
+{% extends "base_bootstrap.html" %}
+{% block navbar %}
+{% load app_tags %}
+{% block head %}
+<style>
+body {
+  background-image: url('https://cdn.hipwallpaper.com/i/1/84/f5emTE.jpg');
+}
+</style>
+{% endblock %}
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container-fluid">
+
+    <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
+    <ul class="nav navbar-nav">
+      {% url 'bank' as bank %}
+      <div class="navbar-header"><li {% if request.get_full_path == bank %}class="active"{% endif %}>
+          <a class="navbar-brand" href="{% url 'bank:all' %}">Home</a></li></div>
+      <li><a href="{% url 'bank:customers_list' %}">Customer List</a></li>
+      <li><a href="{% url 'bank:trans_list' %}">Transaction List</a></li>
+
+
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+        <li>
+        <a href="{% url 'bank:customers_create' %}">Add Customers</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'logout' %}?next={% url 'bank:all' %}">Logout</a></li>
+            </ul>
+        </li>
+        {% else %}
+        <li>
+        <a href="{% url 'login' %}?next={% url 'bank:all' %}">Login</a>
+        </li>
+        {% endif %}
+    </ul>
+  </div>
+</nav>
+
+{% endblock %}

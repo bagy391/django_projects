@@ -1,0 +1,51 @@
+{% extends "bank/base_menu.html" %}
+{% block head %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+  .bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;
+  }
+  .bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;
+  }
+  .bg-3 {
+    background-color: #fff; /* White */
+    color: #555555;
+  }
+  </style>
+</head>
+{% endblock %}
+{% block content %}
+<body>
+
+<div class="container-fluid bg-1 text-center">
+  <h3>WELCOME TO SPARKS BANK</h3>
+  <img src="https://bsmedia.business-standard.com/_media/bs/img/article/2019-12/19/full/1576746835-5674.jpg" class="img-circle" alt="Bird" width="350" height="350">
+  <h3>Start Your Journey with our Bank</h3>
+</div>
+
+<div class="container-fluid bg-2 text-center">
+  <h3>We say-</h3>
+  <p>Everyday is a bank account, and time is our currency. No one is rich, no one is poor, we've got 24 hours each.
+  Drive growth in new and underpenetrated markets.</p>
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <h3>Contact Us</h3>
+  <p>Phone: 1800-000-000</p>
+  <p>Email: sparks_bank@spks.com</p>
+  <p>&copy; 2021 UR Narasimha Rangan </p>
+</div>
+
+</body>
+</html>
+
+
+{% endblock %}

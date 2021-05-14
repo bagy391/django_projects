@@ -1,0 +1,10 @@
+{% extends 'home/base_menu.html' %}
+{% block head %}
+    <title>{{ settings.APP_NAME }}</title>
+{% endblock %}
+{% block content %}
+    <h1>Welcome to {{ settings.APP_NAME }} </h1>
+    <h2>Please browse navbar for created apps</h2>
+    <h3>Sparks Foundation Web Development task of Banking system <a href="{% url 'bank:all' %}">Click here</a></h3>
+
+{% endblock %}

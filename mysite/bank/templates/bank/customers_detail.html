@@ -1,0 +1,38 @@
+{% extends "bank/base_menu.html" %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
+{% block head %}
+<style>
+body {
+  background-image: url('https://cdn.hipwallpaper.com/i/1/84/f5emTE.jpg');
+}
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: none;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+</style>
+{% endblock %}
+{% block content %}
+<h1 style="text-align:center;"><u>Sender Customer details:</u></h1>
+<br><br>
+<hr>
+<p style="font-size:20px;">
+    <b>Name:  {{ cust.name }}</b>
+</p>
+<p style="font-size:20px;" >
+    <b>Balance:  {{ cust.balance }}₹</b>
+</p>
+<p style="font-size:20px;">
+    <b>Email:   {{ cust.email}}</b>
+</p>
+
+<p>
+   <button onclick="document.location='{% url 'bank:transfer_to' cust.id %}'">Transfer To</button>
+</p>
+<hr>
+{% endblock %}

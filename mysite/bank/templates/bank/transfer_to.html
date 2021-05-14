@@ -1,0 +1,40 @@
+{% extends "bank/base_menu.html" %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
+{% block head %}
+<style>
+body {
+  background-image: url('https://st2.depositphotos.com/1432405/6975/v/950/depositphotos_69751695-stock-illustration-new-rupee-seamless-pattern.jpg');
+}
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: none;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+</style>
+{% endblock %}
+{% block content %}
+{% if error %}
+<p>
+    <b>PLEASE ENTER AMOUNT LESS THAN YOUR BALANCE({{custse.balance}}rs)</b>
+</p>
+{% endif %}
+{% if error1 %}
+<p>
+    <b>SENDER AND RECEIVER CANNOT BE SAME!! TRY AGAIN</b>
+</p>
+{% endif %}
+{% load crispy_forms_tags %}
+<form method="post" action="{% url 'bank:transfer_to' custse.id %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+<input type="submit" value="Submit">
+<input type="submit" value="Back" onclick="window.location.href='{% url 'bank:customers_list' %}';return false;">
+</form>
+
+{% endblock %}
+

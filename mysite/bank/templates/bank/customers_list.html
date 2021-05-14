@@ -1,0 +1,51 @@
+{% extends "bank/base_menu.html" %}
+{% block head %}
+<style>
+body {
+  background-image: url('https://cdn.hipwallpaper.com/i/1/84/f5emTE.jpg');
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #000000;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+{% endblock %}
+{% block content %}
+  <h1>Bank Customers List</h1>
+  {% if cust_list %}
+  <table style="width:100%">
+      <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Balance</th>
+    <th>Action</th>
+    <th>Select</th>
+      </tr>
+    {% for cust in cust_list %}
+      <tr>
+          <td>{{ cust.name }}</td>
+          <td>{{cust.email}}</td>
+          <td>{{ cust.balance }} Rs</td>
+          <td>(<a href="{% url 'bank:customers_update' cust.id %}">Update</a> | <a href="{% url 'bank:customers_delete' cust.id %}">Delete</a>)</td>
+          <td><a href="{% url 'bank:customers_detail' cust.id %}">Select Customer</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>There are no Customers in the Bank.</p>
+  {% endif %}
+
+
+
+{% endblock %}

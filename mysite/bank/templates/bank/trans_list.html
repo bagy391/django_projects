@@ -1,0 +1,46 @@
+{% extends "bank/base_menu.html" %}
+{% block head %}
+<style>
+body {
+  background-image: url('https://cdn.hipwallpaper.com/i/1/84/f5emTE.jpg');
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #000000;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+{% endblock %}
+{% block content %}
+  <h1>Transaction List({{ trans_count }})</h1>
+  {% if trans_list %}
+    <table style="width:100%">
+      <tr>
+    <th>Sender</th>
+    <th>Receiver</th>
+    <th>Amount</th>
+    <th>Day/Time</th>
+      </tr>
+    {% for trans in trans_list %}
+      <tr>
+          <td>{{ trans.sender }}</td>
+          <td>{{trans.receiver}}</td>
+          <td>{{ trans.amount }} Rs</td>
+          <td>{{trans.time}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>There are no Transactions Made.</p>
+  {% endif %}
+{% endblock %}
