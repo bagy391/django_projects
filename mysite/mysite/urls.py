@@ -21,6 +21,7 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.views.static import serve
 from django.views.generic import TemplateView
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     #path('', include("ads.urls")),  # Change to ads.urls
@@ -36,6 +37,7 @@ urlpatterns = [
     path('autos/',include('autos.urls')),
     path('cats/',include('cats.urls')),
     path('bank/',include('bank.urls')),
+    path('portfolio/',include('myportfolio.urls')),
 ]
 
 # Serve the static HTML
@@ -47,6 +49,7 @@ urlpatterns += [
         name='site_path'
         ),
 ]
+urlpatterns+=staticfiles_urlpatterns()
 
 # Serve the favicon - Keep for later
 urlpatterns += [
