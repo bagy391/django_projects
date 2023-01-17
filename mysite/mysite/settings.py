@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'hello.apps.HelloConfig',
     'polls.apps.PollsConfig',
     'bank.apps.BankConfig',
+    'myportfolio.apps.MyportfolioConfig',
 
 ]
 
@@ -145,6 +146,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'assets'),
+)
 # Add the settings below
 
 REST_FRAMEWORK = {
