@@ -38,6 +38,7 @@ urlpatterns = [
     path('cats/',include('cats.urls')),
     path('bank/',include('bank.urls')),
     path('portfolio/',include('myportfolio.urls')),
+path('badminton/', include('badminton.urls')),
 ]
 
 # Serve the static HTML

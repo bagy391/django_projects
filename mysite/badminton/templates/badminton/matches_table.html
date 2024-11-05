@@ -1,0 +1,37 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Teams</th>
+                <th>Score</th>
+                <th>Played</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in matches %}
+            <tr>
+                <td>{{ match.team1 }} vs {{ match.team2 }}</td>
+                <td>
+                    {% if match.played_at %}
+                        {{ match.team1_score }} - {{ match.team2_score }}
+                    {% else %}
+                        Not played
+                    {% endif %}
+                </td>
+                <td>{{ match.played_at|date:"M d, Y H:i"|default:"" }}</td>
+                <td>
+                    {% if not match.played_at %}
+                    <form method="post" action="{% url 'update-match' match.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <input type="number" name="team1_score" class="form-control form-control-sm d-inline" style="width: 60px">
+                        <input type="number" name="team2_score" class="form-control form-control-sm d-inline" style="width: 60px">
+                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,93 @@
+{% extends 'badminton/base.html' %}
+
+{% block content %}
+<h2>{{ tournament.name }}</h2>
+
+{% if tournament.winner %}
+<div class="alert alert-success">
+    <h4>Tournament Winner: {{ tournament.winner }}</h4>
+</div>
+{% endif %}
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Team Standings
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Team</th>
+                                <th>Wins</th>
+                                <th>Points Won</th>
+                                <th>Points Lost</th>
+                                <th>Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for standing in standings %}
+                            <tr>
+                                <td>{{ standing.team }}</td>
+                                <td>{{ standing.wins }}</td>
+                                <td>{{ standing.points_won }}</td>
+                                <td>{{ standing.points_lost }}</td>
+                                <td>{{ standing.point_difference }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Round Robin Matches -->
+<div class="row mb-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Round Robin Matches
+            </div>
+            <div class="card-body">
+                {% include "badminton/matches_table.html" with matches=round_robin_matches %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Semi Finals -->
+{% if semifinal_matches %}
+<div class="row mb-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                Semi Finals
+            </div>
+            <div class="card-body">
+                {% include "badminton/matches_table.html" with matches=semifinal_matches %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Finals -->
+{% if final_match %}
+<div class="row mb-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                Final Match
+            </div>
+            <div class="card-body">
+                {% include "badminton/matches_table.html" with matches=final_match|make_list %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

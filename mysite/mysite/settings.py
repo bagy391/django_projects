@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'polls.apps.PollsConfig',
     'bank.apps.BankConfig',
     'myportfolio.apps.MyportfolioConfig',
+    'badminton'
 
 ]
 
