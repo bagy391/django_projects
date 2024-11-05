@@ -58,6 +58,37 @@
         </div>
     </div>
 </div>
+    <!-- Qualifier -->
+    {% if qualifier %}
+<div class="row mb-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Qualifier Match
+            </div>
+            <div class="card-body">
+                {% include "badminton/matches_table.html" with matches=qualifier %}
+            </div>
+        </div>
+    </div>
+</div>
+    {% endif %}
+
+    <!-- Eliminator -->
+    {% if eliminator %}
+<div class="row mb-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Eliminator Match
+            </div>
+            <div class="card-body">
+                {% include "badminton/matches_table.html" with matches=eliminator %}
+            </div>
+        </div>
+    </div>
+</div>
+    {% endif %}
 
 <!-- Semi Finals -->
 {% if semifinal_matches %}

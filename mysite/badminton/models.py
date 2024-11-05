@@ -4,6 +4,8 @@ from django.utils import timezone
 
 MATCH_TYPE_CHOICES = [
     ('RR', 'Round Robin'),
+    ('Q', 'Qualifier'),
+    ('E', 'Eliminator'),
     ('SF', 'Semi Final'),
     ('F', 'Final')
 ]
@@ -90,24 +92,12 @@ class Tournament(models.Model):
                 tournament=self,
                 team1=standings[0]['team'],
                 team2=standings[1]['team'],
-                match_type='SF')
+                match_type='Q')
             Match.objects.create(
                 tournament=self,
                 team1=standings[2]['team'],
                 team2=standings[3]['team'],
-                match_type='SF'
-            )
-            Match.objects.create(
-                tournament=self,
-                team1='loser of sf1',
-                team2='winner of sf2',
-                match_type='SF'
-            )
-            Match.objects.create(
-                tournament=self,
-                team1='winner of sf1',
-                team2='winner of sf3',
-                match_type='F'
+                match_type='E'
             )
             return True
         return False
@@ -131,27 +121,57 @@ class Match(models.Model):
     played_at = models.DateTimeField(null=True, blank=True)
     match_type = models.CharField(max_length=2, choices=MATCH_TYPE_CHOICES, default='RR')
 
+    @property
+    def winner(self):
+        if self.team1_score > self.team2_score:
+            return self.team1
+        return self.team2
+
     def __str__(self):
         return f"{self.get_match_type_display()}: {self.team1} vs {self.team2}"
 
-    def create_final_match(self):
-        if self.match_type == 'SF' and self.played_at:
-            other_semi = Match.objects.filter(
+    def create_semis(self):
+        if self.match_type == 'E' and self.played_at:
+            qualifier = Match.objects.filter(
                 tournament=self.tournament,
-                match_type='SF'
-            ).exclude(id=self.id).first()
-
-            if other_semi and other_semi.played_at:
-                winner1 = self.team1 if self.team1_score > self.team2_score else self.team2
-                winner2 = other_semi.team1 if other_semi.team1_score > other_semi.team2_score else other_semi.team2
-
+                match_type='Q'
+            ).first()
+            if qualifier.played_at:
+                lost_team = qualifier.team2 if qualifier.winner == qualifier.team1 else qualifier.team1
                 Match.objects.create(
                     tournament=self.tournament,
-                    team1=winner1,
-                    team2=winner2,
-                    match_type='F'
+                    team1=lost_team,
+                    team2=self.winner,
+                    match_type='SF'
                 )
-                return True
+
+    def check_semis(self):
+        if self.match_type == 'Q' and self.played_at:
+            eliminator_match = Match.objects.filter(
+                tournament=self.tournament,
+                match_type='E'
+            ).first()
+            lost_team = self.team2 if self.winner == self.team1 else self.team1
+            if eliminator_match.played_at:
+                Match.objects.create(
+                    tournament=self.tournament,
+                    team1=lost_team,
+                    team2=eliminator_match.winner,
+                    match_type='SF'
+                )
+
+    def create_final_match(self):
+        if self.match_type == 'SF' and self.played_at:
+            qualifier_winner = Match.objects.filter(
+                tournament=self.tournament,
+                match_type='Q'
+            ).first().winner
+            Match.objects.create(
+                tournament=self.tournament,
+                team1=qualifier_winner,
+                team2=self.winner,
+                match_type='F'
+            )
         return False
 
     def update_tournament_winner(self):

@@ -53,11 +53,15 @@ def create_tournament(request):
 
         # Create matches in round-robin format
         teams = Team.objects.filter(tournament=tournament)
+        match_type = "RR"
+        if len(teams) == 2:
+            match_type = "F"
         for team1, team2 in combinations(teams, 2):
             Match.objects.create(
                 tournament=tournament,
                 team1=team1,
-                team2=team2
+                team2=team2,
+                match_type = match_type
             )
 
         return redirect('tournament-detail', pk=tournament.pk)
@@ -108,6 +112,12 @@ def update_match_score(request, match_id):
         elif match.match_type == 'F':
             match.update_tournament_winner()
 
+        elif match.match_type == 'E':
+            match.create_semis()
+
+        elif match.match_type == "Q":
+            match.check_semis()
+
         return redirect('tournament-detail', pk=match.tournament.pk)
 
     return redirect('tournament-list')
@@ -136,5 +146,14 @@ class TournamentDetailView(DetailView):
             tournament=self.object,
             match_type='F'
         )
+        context['qualifier'] = Match.objects.filter(
+            tournament=self.object,
+            match_type='Q'
+        )
+        context['eliminator'] = Match.objects.filter(
+            tournament=self.object,
+            match_type='E'
+        )
+
 
         return context
