@@ -74,25 +74,41 @@ class Tournament(models.Model):
     def start_knockout_stage(self):
         if not self.is_knockout_stage:
             standings = self.get_team_standings()[:4]
-            if len(standings) < 4:
+            if len(standings) < 3:
                 return False
 
-            # Create semi-finals
+            if len(standings) == 3:
+                Match.objects.create(
+                    tournament=self,
+                    team1=standings[0]['team'],
+                    team2=standings[1]['team'],
+                    match_type='F'
+                )
+                return True
+
             Match.objects.create(
                 tournament=self,
                 team1=standings[0]['team'],
+                team2=standings[1]['team'],
+                match_type='SF')
+            Match.objects.create(
+                tournament=self,
+                team1=standings[2]['team'],
                 team2=standings[3]['team'],
                 match_type='SF'
             )
             Match.objects.create(
                 tournament=self,
-                team1=standings[1]['team'],
-                team2=standings[2]['team'],
+                team1='loser of sf1',
+                team2='winner of sf2',
                 match_type='SF'
             )
-
-            self.is_knockout_stage = True
-            self.save()
+            Match.objects.create(
+                tournament=self,
+                team1='winner of sf1',
+                team2='winner of sf3',
+                match_type='F'
+            )
             return True
         return False
 

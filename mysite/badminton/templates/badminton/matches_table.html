@@ -22,7 +22,7 @@
                 <td>{{ match.played_at|date:"M d, Y H:i"|default:"" }}</td>
                 <td>
                     {% if not match.played_at %}
-                    <form method="post" action="{% url 'update-match' match.id %}" class="d-inline">
+                    <form method="post" action="/badminton/matches/{{ match.id }}/update/" class="d-inline">
                         {% csrf_token %}
                         <input type="number" name="team1_score" class="form-control form-control-sm d-inline" style="width: 60px">
                         <input type="number" name="team2_score" class="form-control form-control-sm d-inline" style="width: 60px">

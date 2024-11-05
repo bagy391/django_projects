@@ -135,6 +135,6 @@ class TournamentDetailView(DetailView):
         context['final_match'] = Match.objects.filter(
             tournament=self.object,
             match_type='F'
-        ).first()
+        )
 
         return context
