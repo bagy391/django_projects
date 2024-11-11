@@ -11,7 +11,7 @@
         <tbody>
             {% for match in matches %}
             <tr>
-                <td>{{ match.team1 }} vs {{ match.team2 }}</td>
+                <td>{{ match.team1 }} <b>VS</b> {{ match.team2 }}</td>
                 <td>
                     {% if match.played_at %}
                         {{ match.team1_score }} - {{ match.team2_score }}
