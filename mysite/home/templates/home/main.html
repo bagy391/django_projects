@@ -1,9 +1,108 @@
 {% extends 'home/base_menu.html' %}
-{% block head %}
-    <title>{{ settings.APP_NAME }}</title>
-{% endblock %}
-{% block content %}
-    <h1>Welcome to {{ settings.APP_NAME }} </h1>
-    <h2>Please browse navbar for created apps</h2>
 
+{% block head %}
+    <title>Personal Portfolio</title>
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        body {
+            font-size: 1.2rem;
+        }
+        .blog-header {
+            text-align: center;
+            margin: 2.5rem 0;
+            font-size: 1.5rem;
+        }
+        .blog-content {
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            font-size: 1.25rem;
+        }
+        .blog-timeline {
+            border-left: 4px solid #007bff;
+            padding-left: 2rem;
+            margin-top: 2rem;
+        }
+        .blog-timeline-item {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        .blog-timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -1.5rem;
+            top: 0;
+            width: 1rem;
+            height: 1rem;
+            background-color: #007bff;
+            border-radius: 50%;
+        }
+        .date {
+            font-weight: bold;
+            color: #007bff;
+            font-size: 1.3rem;
+        }
+        h1, h2, h3, h4 {
+            color: #333;
+        }
+        p, li {
+            line-height: 1.6;
+        }
+    </style>
+    <!-- Blog Header -->
+    <div class="container blog-header">
+        <h1>Welcome to My Portfolio</h1>
+        <h2>Explore My Development Journey and Projects</h2>
+        <p class="text-muted">Checkout the apps in MyApps section for all my contributions.</p>
+        <p class="text-muted">A timeline of my key projects and milestones that showcase my skills and growth as a developer.</p>
+
+    </div>
+
+    <!-- Blog Content -->
+    <div class="container blog-content">
+        <h3>My Journey in Web Development</h3>
+
+        <div class="blog-timeline">
+            <!-- Timeline Item 1 -->
+            <div class="blog-timeline-item">
+                <p class="date">September 20, 2020</p>
+                <h4>Django for Everybody Course</h4>
+                <p>I began my web development journey with the <em>Django for Everybody</em> course on Coursera, offered by the University of Michigan. This course introduced me to the fundamentals of Django and backend development, giving me a solid foundation in web frameworks, databases, and the MVC (Model-View-Controller) architecture.</p>
+                 <p><a href="https://drive.google.com/file/d/1e5mKzonoK64WpTZFacZIX9VrBvaq58r0/view?usp=sharing" target="_blank">View Course Certificate</a></p>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="blog-timeline-item">
+                <p class="date">May 2021</p>
+                <h4><b><a href="{% url 'bank:all' %}">Bank Application for Internship</a></b></h4>
+                <p>During my internship, I developed a bank application focused on streamlining customer management and transaction processing:</p>
+                <ul>
+                    <li><strong>Customer Management:</strong> The application allowed authenticated employees to add customers securely, ensuring privacy and data control.</li>
+                    <li><strong>Transaction Processing:</strong> Employees could manage and execute transactions between customers. Each transaction was logged in a dedicated table, supporting accurate tracking and reporting.</li>
+                </ul>
+                 <p><a href="https://drive.google.com/file/d/1YK5Ov_SosFr0o4SU1e6g2kScTVwF4pxM/view?usp=sharing" target="_blank">View Internship Certificate</a></p>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="blog-timeline-item">
+                <p class="date">May 2023</p>
+                <h4><b><a href="{% url 'portfolio' %}">Personal Portfolio</a></b></h4>
+                <p>I created this personal portfolio to showcase my skills, projects, and achievements. This website serves as a professional platform where I can share my work and experience with potential collaborators and employers. Built with modern web practices, it reflects my technical abilities and dedication.</p>
+            </div>
+
+            <!-- Timeline Item 4 -->
+            <div class="blog-timeline-item">
+                <p class="date">June 2024</p>
+                <h4><b><a href="{% url 'player-list' %}">Badminton Score Tracking App</a></b></h4>
+                <p>To engage with my colleagues, I developed a badminton tracking app that has become a central hub for our friendly games:</p>
+                <ul>
+                    <li><strong>Game Tracking:</strong> The app allows us to record our games, tracking statistics and personal performance over time.</li>
+                    <li><strong>Community Engagement:</strong> This app fosters a sense of community and friendly competition among my colleagues, encouraging us to stay active and connected.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -4,7 +4,7 @@
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-        <a class="navbar-brand" href="/">{{ settings.APP_NAME }}</a>
+        <a class="navbar-brand" href="/">HomePage</a>
     </div>
     <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
     <ul class="nav navbar-nav">
@@ -13,6 +13,7 @@
             <p>MyApps<b class="caret"></b></p>
         </a>
         <ul class="dropdown-menu">
+            <li><a href="{% url 'player-list' %}">Badminton</a></li>
             <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
             <li><a href="{% url 'bank:all' %}">Bank</a></li>
             <li><a href="{% url 'ads:all' %}">Ads</a></li>
