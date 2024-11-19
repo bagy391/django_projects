@@ -123,7 +123,7 @@ class Match(models.Model):
 
     @property
     def winner(self):
-        if self.team1_score > self.team2_score:
+        if int(self.team1_score) > int(self.team2_score):
             return self.team1
         return self.team2
 
@@ -176,7 +176,7 @@ class Match(models.Model):
 
     def update_tournament_winner(self):
         if self.match_type == 'F' and self.played_at:
-            winner = self.team1 if self.team1_score > self.team2_score else self.team2
+            winner = self.winner
             self.tournament.winner = winner
             self.tournament.end_date = timezone.now()
             self.tournament.save()
