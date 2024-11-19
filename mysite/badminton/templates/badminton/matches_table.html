@@ -3,6 +3,7 @@
         <thead>
             <tr>
                 <th>Teams</th>
+                <th>Winning Team🏅</th>
                 <th>Score</th>
                 <th>Played</th>
                 <th>Actions</th>
@@ -12,6 +13,13 @@
             {% for match in matches %}
             <tr>
                 <td>{{ match.team1 }} <b>VS</b> {{ match.team2 }}</td>
+                <td>
+                    {% if match.played_at %}
+                        {{ match.winner }}
+                    {% else %}
+                        Not played
+                    {% endif %}
+                </td>
                 <td>
                     {% if match.played_at %}
                         {{ match.team1_score }} - {{ match.team2_score }}
