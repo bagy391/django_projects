@@ -25,7 +25,15 @@
                         </label>
                     </div>
                     {% endfor %}
+                    <div class="form-group mt-3">
+                        <label for="tournament_type">Tournament Type</label>
+                        <select class="form-control" id="tournament_type" name="tournament_type">
+                            <option value="Qualifier/Eliminator">Qualifier/Eliminator</option>
+                            <option value="1V4|2V3">1V4 | 2V3</option>
+                        </select>
+                    </div>
                 </div>
+
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success">Create Tournament</button>
                 </div>

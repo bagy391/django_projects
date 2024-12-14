@@ -24,15 +24,37 @@ class TournamentListView(ListView):
     context_object_name = 'tournaments'
 
 
+def round_robin_matches(teams):
+    # Ensure even number of teams
+    if len(teams) % 2 != 0:
+        teams.append(None)  # Add a 'bye' team if odd number
+
+    n = len(teams)
+    matches = []
+
+    for round in range(n - 1):
+        # Rotate teams while keeping first team fixed
+        mid = n // 2
+        teams_copy = teams[1:mid] + teams[mid:] + teams[:1]
+
+        # Create matches for this round
+        for i in range(mid):
+            if teams_copy[i] is not None and teams_copy[n - 1 - i] is not None:
+                matches.append((teams_copy[i], teams_copy[n - 1 - i]))
+
+    return matches
+
 def create_tournament(request):
     if request.method == 'POST':
         selected_players = request.POST.getlist('players')
+        tournament_type = request.POST.get('tournament_type')
         if len(selected_players) < 4:
             messages.error(request, 'Need at least 4 players for a tournament')
             return redirect('player-list')
 
         tournament = Tournament.objects.create(
-            name=f"Tournament {timezone.now().strftime('%Y-%m-%d %H:%M')}"
+            name=f"Tournament {timezone.now().strftime('%Y-%m-%d %H:%M')}",
+            type=tournament_type
         )
 
         # Add selected players to tournament
@@ -56,14 +78,21 @@ def create_tournament(request):
         match_type = "RR"
         if len(teams) == 2:
             match_type = "F"
-        for team1, team2 in combinations(teams, 2):
+        # for team1, team2 in combinations(teams, 2):
+        #     Match.objects.create(
+        #         tournament=tournament,
+        #         team1=team1,
+        #         team2=team2,
+        #         match_type = match_type
+        #     )
+        teams = list(teams)
+        for team1, team2 in round_robin_matches(teams):
             Match.objects.create(
                 tournament=tournament,
                 team1=team1,
                 team2=team2,
-                match_type = match_type
+                match_type=match_type
             )
-
         return redirect('tournament-detail', pk=tournament.pk)
 
     return redirect('player-list')
@@ -90,6 +119,9 @@ class PlayerCreateView(CreateView):
 def update_match_score(request, match_id):
     if request.method == 'POST':
         match = Match.objects.get(id=match_id)
+        if match.team1_score or match.team2_score:
+            messages.error(request, 'Match score already entered')
+            return redirect('tournament-detail', pk=match.tournament.pk)
         match.team1_score = request.POST.get('team1_score')
         match.team2_score = request.POST.get('team2_score')
         match.played_at = timezone.now()

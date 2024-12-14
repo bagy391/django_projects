@@ -21,6 +21,11 @@ class Player(models.Model):
 
 
 class Tournament(models.Model):
+    TYPE_CHOICES = [
+        ('Qualifier/Eliminator', 'Qualifier/Eliminator'),
+        ('1V4|2V3', '1V4|2V3')
+    ]
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='Qualifier/Eliminator')
     name = models.CharField(max_length=200)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(null=True, blank=True)
@@ -87,19 +92,30 @@ class Tournament(models.Model):
                     match_type='F'
                 )
                 return True
-
-            Match.objects.create(
-                tournament=self,
-                team1=standings[0]['team'],
-                team2=standings[1]['team'],
-                match_type='Q')
-            Match.objects.create(
-                tournament=self,
-                team1=standings[2]['team'],
-                team2=standings[3]['team'],
-                match_type='E'
-            )
-            return True
+            if self.type == '1V4|2V3':
+                Match.objects.create(
+                    tournament=self,
+                    team1=standings[0]['team'],
+                    team2=standings[3]['team'],
+                    match_type='SF')
+                Match.objects.create(
+                    tournament=self,
+                    team1=standings[1]['team'],
+                    team2=standings[2]['team'],
+                    match_type='SF'
+                )
+            else:
+                Match.objects.create(
+                    tournament=self,
+                    team1=standings[0]['team'],
+                    team2=standings[1]['team'],
+                    match_type='Q')
+                Match.objects.create(
+                    tournament=self,
+                    team1=standings[2]['team'],
+                    team2=standings[3]['team'],
+                    match_type='E'
+                )
         return False
 
 
@@ -161,7 +177,15 @@ class Match(models.Model):
                 )
 
     def create_final_match(self):
-        if self.match_type == 'SF' and self.played_at:
+        if self.tournament.type == '1V4|2V3':
+            if all(m.played_at for m in Match.objects.filter(tournament=self.tournament, match_type='SF')):
+                Match.objects.create(
+                    tournament=self.tournament,
+                    team1=Match.objects.filter(tournament=self.tournament, match_type='SF').first().winner,
+                    team2=Match.objects.filter(tournament=self.tournament, match_type='SF').last().winner,
+                    match_type='F'
+                )
+        elif self.played_at:
             qualifier_winner = Match.objects.filter(
                 tournament=self.tournament,
                 match_type='Q'
