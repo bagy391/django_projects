@@ -25,6 +25,14 @@ class TournamentListView(ListView):
 
 
 def round_robin_matches(teams):
+    # Special handling for small number of teams
+    if len(teams) == 3:
+        matches = [
+            (teams[0], teams[1]),
+            (teams[1], teams[2]),
+            (teams[2], teams[0])
+        ]
+        return matches
     # Ensure even number of teams
     if len(teams) % 2 != 0:
         teams.append(None)  # Add a 'bye' team if odd number
