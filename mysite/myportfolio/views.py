@@ -4,6 +4,7 @@ from django.conf import settings
 
 from .models import ContactMessage
 from django.contrib import messages
+from django.core.mail import send_mail
 
 # Create your views here.
 class HomeView(View):
@@ -27,6 +28,13 @@ def contact_view(request):
                 email=request.POST.get('email'),
                 subject=request.POST.get('subject'),
                 message=request.POST.get('message')
+            )
+            send_mail(
+                request.POST.get('subject'),
+                request.POST.get('message') + '\n\nFrom: ' + request.POST.get('name') + ' <' + request.POST.get('email') + '>',
+                request.POST.get('email'),  # From email
+                [settings.TO_EMAIL],
+                fail_silently=False,
             )
         except Exception:
             pass

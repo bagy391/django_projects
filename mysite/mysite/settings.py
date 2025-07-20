@@ -207,3 +207,9 @@ if (len(sys.argv) >= 2 and sys.argv[1] == 'runserver'):
         }
     }
 '''
+
+# If you want to use the local_settings.py file, uncomment the following lines
+try:
+    from .local_settings import *
+except ImportError:
+    print('No local_settings.py file found. If you want to use it, create a file named local_settings.py in the same directory as settings.py.')

@@ -1,3 +1,6 @@
 __pycache__
 *.swp
 *.sqlite3
+
+mysite/mysite/local_settings.py
+.idea
